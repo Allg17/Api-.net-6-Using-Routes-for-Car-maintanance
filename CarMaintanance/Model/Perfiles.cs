@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarMaintanance.Model
 {
@@ -7,16 +9,14 @@ namespace CarMaintanance.Model
         [Key]
         public int PerfilID { get; set; }
         public int UsuarioID { get; set; }
+        [Column(TypeName = "varchar(30)")]
         public string Nombre { get; set; }
-        public string Modulo { get; set; }
+        [Column(TypeName = "varchar(150)")]
         public string Descripcion { get; set; }
-        public bool Crear_Editar { get; set; }
-        public bool Eliminar { get; set; }
-        public bool Ver { get; set; }
         public int AreaID { get; set; }
         public virtual Areas Area { get; set; }
+        public virtual List<PerfilesRoles> PefilesRoles { get; set; }
 
-        public int RolID { get; set; }
-        public virtual Roles Rol { get; set; }
+        public virtual List<Modulos> ModulosDetalle { get; set; }
     }
 }

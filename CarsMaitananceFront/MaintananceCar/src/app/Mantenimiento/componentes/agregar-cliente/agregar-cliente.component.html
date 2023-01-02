@@ -1,0 +1,50 @@
+<div style="padding: 10px;">
+    <h1>
+        Agregar Cliente
+    </h1>
+
+    <div fxLayout="row" fxLayoutGap="40px" fxLayout.xs="column">
+        <div fxFlex="100" fxLayout="column">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayout.xs="column">
+                <mat-form-field fxFlex="100">
+                    <mat-label>Nombre Completo</mat-label>
+                    <input matInput type="text" required [(ngModel)]="cliente.nombre"   >
+                </mat-form-field>
+
+                <mat-form-field fxFlex="100">
+                    <mat-label>Teléfono</mat-label>
+                    <input matInput type="tel"  [textMask]="{mask: mask}" required [(ngModel)]="cliente.telefono">
+                </mat-form-field>
+            </div>
+
+            <mat-form-field>
+                <mat-label>Correo</mat-label>
+                <input matInput type="email" required [(ngModel)]="cliente.correo" >
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Dirección</mat-label>
+                <textarea matInput type="text" required [(ngModel)]="cliente.direccion"></textarea>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Cedula</mat-label>
+                <input matInput [textMask]="{mask: maskCedula}" type="text" [(ngModel)]="cliente.cedula" required>
+            </mat-form-field>
+            <br>
+            <div fxLayoutGap="10px">
+                <button mat-raised-button color="primary" fxFlex="50" (click)="Agregar()">
+                    <mat-icon>edit</mat-icon>
+                    Crear
+                </button>
+
+                <button mat-raised-button color="warn" fxFlex="50" (click)="Cerrar()">
+                    <mat-icon>close</mat-icon>
+                    Salir
+                </button>
+
+                {{cliente | json}}
+            </div>
+        </div>
+    </div>
+</div>

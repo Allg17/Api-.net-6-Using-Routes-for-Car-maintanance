@@ -1,0 +1,26 @@
+<h3>Consultar Cliente</h3>
+<div fxLayout="row" fxLayoutGap="40px" fxLayout.xs="column">
+    <div fxFlex="100" fxLayout="column">
+        <mat-form-field>
+            <mat-label>Cedula</mat-label>
+            <input matInput type="text" [textMask]="{mask: maskCedula}" required  [(ngModel)]="valor"  >
+        </mat-form-field>
+        <span *ngIf="Nombre; else noEncontro">{{Nombre}}</span>
+        <ng-template #noEncontro>{{Nombre}}</ng-template>
+        <br>
+        <div fxLayoutGap="10px">
+            <button mat-raised-button color="primary" fxFlex="50" (click)="Buscar()">
+                <mat-icon>search</mat-icon>
+                Buscar
+            </button>
+
+            <button mat-raised-button color="warn" fxFlex="50" (click)="Agregar()">
+                <mat-icon>add</mat-icon>
+                Agregar
+            </button>
+        </div>
+
+        <!-- <span>{{clientes |json}}</span> -->
+    </div>
+
+</div>

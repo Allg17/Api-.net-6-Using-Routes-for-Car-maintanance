@@ -61,13 +61,25 @@ namespace CarMaintanance.Model
                .WithMany(x => x.DetalleFacturas)
                .HasForeignKey(foreignKeyExpression: x => x.ClienteID).OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Modulos>()
+             .HasOne<Perfiles>(x => x.Perfil)
+             .WithMany(x => x.ModulosDetalle)
+             .HasForeignKey(foreignKeyExpression: x => x.PerfilID).OnDelete(DeleteBehavior.NoAction);
+
+            //Many to many 
+            modelBuilder.Entity<PerfilesRoles>()
+            .HasOne<Roles>(x => x.Rol)
+            .WithMany(x => x.PefilesRoles)
+            .HasForeignKey(foreignKeyExpression: x => x.RolID).OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<PerfilesRoles>()
+           .HasOne<Perfiles>(x => x.Perfil)
+           .WithMany(x => x.PefilesRoles)
+           .HasForeignKey(foreignKeyExpression: x => x.PerfilID).OnDelete(DeleteBehavior.NoAction);
+
+          
 
             //One to one
-            modelBuilder.Entity<Roles>()
-            .HasOne<Perfiles>(s => s.Perfil)
-            .WithOne(ad => ad.Rol)
-            .HasForeignKey<Perfiles>(ad => ad.RolID).OnDelete(DeleteBehavior.NoAction);
-
             modelBuilder.Entity<Usuarios>()
               .HasOne<Roles>(s => s.Rol)
               .WithOne(ad => ad.Usuario)

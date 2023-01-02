@@ -35,10 +35,7 @@ namespace CarMaintanance.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PerfilID")
-                        .HasColumnType("int");
+                        .HasColumnType("varchar(30)");
 
                     b.Property<int>("UsuarioID")
                         .HasColumnType("int");
@@ -85,24 +82,28 @@ namespace CarMaintanance.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClienteID"));
 
+                    b.Property<string>("Cedula")
+                        .IsRequired()
+                        .HasColumnType("varchar(15)");
+
                     b.Property<string>("Correo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Direccion")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<DateTime>("FechaCreado")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(40)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(15)");
 
                     b.Property<int>("UsuarioID")
                         .HasColumnType("int");
@@ -125,7 +126,7 @@ namespace CarMaintanance.Migrations
 
                     b.Property<string>("Comentario")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<bool>("Completada")
                         .HasColumnType("bit");
@@ -152,6 +153,47 @@ namespace CarMaintanance.Migrations
                     b.ToTable("Facturas");
                 });
 
+            modelBuilder.Entity("CarMaintanance.Model.Modulos", b =>
+                {
+                    b.Property<int>("ModuloId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ModuloId"));
+
+                    b.Property<bool>("Crear_Editar")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<bool>("Eliminar")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<int>("PerfilID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Ver")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ModuloId");
+
+                    b.HasIndex("PerfilID");
+
+                    b.ToTable("Modulos");
+                });
+
             modelBuilder.Entity("CarMaintanance.Model.Perfiles", b =>
                 {
                     b.Property<int>("PerfilID")
@@ -163,42 +205,46 @@ namespace CarMaintanance.Migrations
                     b.Property<int>("AreaID")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Crear_Editar")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Eliminar")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Modulo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RolID")
-                        .HasColumnType("int");
+                        .HasColumnType("varchar(30)");
 
                     b.Property<int>("UsuarioID")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Ver")
-                        .HasColumnType("bit");
 
                     b.HasKey("PerfilID");
 
                     b.HasIndex("AreaID")
                         .IsUnique();
 
-                    b.HasIndex("RolID")
-                        .IsUnique();
-
                     b.ToTable("Perfiles");
+                });
+
+            modelBuilder.Entity("CarMaintanance.Model.PerfilesRoles", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("PerfilID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RolID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("PerfilID");
+
+                    b.HasIndex("RolID");
+
+                    b.ToTable("PerfilesRoles");
                 });
 
             modelBuilder.Entity("CarMaintanance.Model.Recordatorios", b =>
@@ -236,11 +282,16 @@ namespace CarMaintanance.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RolID"));
 
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("varchar(150)");
+
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PerfilID")
-                        .HasColumnType("int");
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("varchar(30)");
 
                     b.Property<int>("UsuarioID")
                         .HasColumnType("int");
@@ -269,7 +320,7 @@ namespace CarMaintanance.Migrations
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(500)");
 
                     b.Property<int>("FacturasID")
                         .HasColumnType("int");
@@ -303,7 +354,7 @@ namespace CarMaintanance.Migrations
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(500)");
 
                     b.Property<bool>("Facturada")
                         .HasColumnType("bit");
@@ -313,7 +364,7 @@ namespace CarMaintanance.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<float>("Precio")
                         .HasColumnType("real");
@@ -350,7 +401,7 @@ namespace CarMaintanance.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(40)");
 
                     b.Property<int>("RolID")
                         .HasColumnType("int");
@@ -402,6 +453,17 @@ namespace CarMaintanance.Migrations
                     b.Navigation("Solicitud");
                 });
 
+            modelBuilder.Entity("CarMaintanance.Model.Modulos", b =>
+                {
+                    b.HasOne("CarMaintanance.Model.Perfiles", "Perfil")
+                        .WithMany("ModulosDetalle")
+                        .HasForeignKey("PerfilID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Perfil");
+                });
+
             modelBuilder.Entity("CarMaintanance.Model.Perfiles", b =>
                 {
                     b.HasOne("CarMaintanance.Model.Areas", "Area")
@@ -410,13 +472,24 @@ namespace CarMaintanance.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("CarMaintanance.Model.Roles", "Rol")
-                        .WithOne("Perfil")
-                        .HasForeignKey("CarMaintanance.Model.Perfiles", "RolID")
+                    b.Navigation("Area");
+                });
+
+            modelBuilder.Entity("CarMaintanance.Model.PerfilesRoles", b =>
+                {
+                    b.HasOne("CarMaintanance.Model.Perfiles", "Perfil")
+                        .WithMany("PefilesRoles")
+                        .HasForeignKey("PerfilID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Area");
+                    b.HasOne("CarMaintanance.Model.Roles", "Rol")
+                        .WithMany("PefilesRoles")
+                        .HasForeignKey("RolID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Perfil");
 
                     b.Navigation("Rol");
                 });
@@ -495,10 +568,16 @@ namespace CarMaintanance.Migrations
                     b.Navigation("RecordatorioList");
                 });
 
+            modelBuilder.Entity("CarMaintanance.Model.Perfiles", b =>
+                {
+                    b.Navigation("ModulosDetalle");
+
+                    b.Navigation("PefilesRoles");
+                });
+
             modelBuilder.Entity("CarMaintanance.Model.Roles", b =>
                 {
-                    b.Navigation("Perfil")
-                        .IsRequired();
+                    b.Navigation("PefilesRoles");
                 });
 
             modelBuilder.Entity("CarMaintanance.Model.Solicitudes", b =>

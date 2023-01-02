@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarMaintanance.Model
 {
@@ -6,6 +8,7 @@ namespace CarMaintanance.Model
     {
         [Key]
         public int UsuarioID { get; set; }
+        [Column(TypeName = "varchar(40)")]
         public string Nombre { get; set; }
         public DateTime Fecha { get; set; }
         public int RolID { get; set; }

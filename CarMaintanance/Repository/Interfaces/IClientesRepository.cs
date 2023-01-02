@@ -1,8 +1,9 @@
 ﻿using CarMaintanance.Model;
 
-namespace CarMaintanance.Repository
+namespace CarMaintanance.Repository.Interfaces
 {
     public interface IClientesRepository : IBaseRepository<Clientes>
     {
+        Clientes GetClienteByCedula(string valor);
     }
 }

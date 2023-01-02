@@ -1,0 +1,41 @@
+<mat-sidenav-container fullscreen>
+    <div class="container">
+        <div style="margin-top: 300px">
+            <div class="row ">
+                <div class="col-md-1 offset-md-4">
+                    <label class="">Usuario</label>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Usuario</mat-label>
+                        <input matInput type="text" [(ngModel)]="user.user">
+                    </mat-form-field>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-1 offset-md-4">
+                    <label class="">Contraseña</label>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Contraseña</mat-label>
+                        <input matInput type="password" [(ngModel)]="user.clave">
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 offset-md-5">
+                    <button mat-raised-button color="primary" (click)="login()">
+                        Ingresar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</mat-sidenav-container>

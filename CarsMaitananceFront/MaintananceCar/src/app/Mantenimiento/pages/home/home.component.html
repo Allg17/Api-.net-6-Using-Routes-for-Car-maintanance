@@ -1,0 +1,77 @@
+
+<mat-sidenav-container fullscreen>
+    <mat-sidenav #sidenav mode="push">
+        <mat-toolbar>
+            <span>Menu</span>
+            <span class="spacer"></span>
+            <button mat-icon-button (click)="sidenav.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+        </mat-toolbar>
+
+        <mat-nav-list>
+            
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+                <mat-expansion-panel-header>
+                    <mat-icon mat-list-icon style="margin-right: 5px;">people_alt</mat-icon>  Administracíon
+                </mat-expansion-panel-header>
+                <mat-nav-list>
+                    <mat-list-item (click)="sidenav.toggle()" role="listitem" routerLink="./consultarmantenimiento">
+                        <mat-icon>search</mat-icon><span>Consultar Mantenimientos</span>
+                    </mat-list-item>
+                </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-list-item (click)="sidenav.toggle()" role="listitem" routerLink="./registro">
+                <mat-icon>app_registration</mat-icon>Registro
+            </mat-list-item>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+                <mat-expansion-panel-header>
+                    <mat-icon mat-list-icon style="margin-right: 5px;">label</mat-icon>  Solicitud
+                </mat-expansion-panel-header>
+                <mat-nav-list>
+
+                    <mat-list-item (click)="sidenav.toggle()" role="listitem" routerLink="./solicitud">
+                        <mat-icon>add_circle</mat-icon><span>Crear Solicitud</span>
+                    </mat-list-item>
+                    <mat-list-item (click)="sidenav.toggle()" role="listitem" routerLink="./consultarSolicitud">
+                        <mat-icon mat-list-icon style="margin-top: 15px;">search</mat-icon><span>Consultar</span>
+                    </mat-list-item>
+                </mat-nav-list>
+            </mat-expansion-panel>
+           
+            <mat-list-item (click)="sidenav.toggle()" role="listitem" routerLink="./facturacion">
+                <mat-icon mat-list-icon>receipt_long</mat-icon> Facturacion
+            </mat-list-item>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+                <mat-expansion-panel-header>
+                    <mat-icon mat-list-icon style="margin-right: 5px;">room_service</mat-icon>  Despacho
+                </mat-expansion-panel-header>
+                <mat-nav-list>
+                    <mat-list-item (click)="sidenav.toggle()" role="listitem" routerLink="./despacho">
+                        <mat-icon style="margin-top: 15px;">send_time_extension</mat-icon><span>Despachar</span>
+                    </mat-list-item>
+                    <mat-list-item (click)="sidenav.toggle()" role="listitem" routerLink="./recordatorio">
+                        <mat-icon style="margin-top: 15px;">edit_calendar</mat-icon><span>Crear Recordatorio</span>
+                    </mat-list-item>
+                </mat-nav-list>
+            </mat-expansion-panel>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-toolbar>
+        <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+
+        <h3 style="margin-top: 15px;">{{user?.nombre}}</h3>
+        <span class="spacer"></span>
+        <mat-icon>logout</mat-icon>
+        <button mat-button (click)="logout()">Logout</button>
+    </mat-toolbar>
+    <div class="container">
+        <router-outlet></router-outlet>
+    </div>
+
+</mat-sidenav-container>

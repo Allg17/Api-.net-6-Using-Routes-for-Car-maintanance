@@ -10,14 +10,31 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using CarMaintanance.Repository;
+using CarMaintanance.Repository.Interfaces;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http.Json;
+using JsonOptions = Microsoft.AspNetCore.Http.Json.JsonOptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<CarDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("ConStr")));
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+);
 
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -42,7 +59,7 @@ builder.Services.AddAuthentication(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddTransient<IMasterRepository, MasterRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -53,10 +70,10 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.MapGet("/security/getMessage", () => "Hello World!").RequireAuthorization();
-app.MapPost("/security/createToken", [AllowAnonymous] (Usuarios user) =>
+app.MapPost("/security/createToken", [AllowAnonymous] (Usuarios user, IMasterRepository master) =>
 {
-    if (user.User == "joydip" && user.Clave == "joydip123")
+    var usuario = master.UsuarioRepository.Get(user.User, user.Clave);
+    if (usuario != null)
     {
         var issuer = builder.Configuration["Jwt:Issuer"];
         var audience = builder.Configuration["Jwt:Audience"];
@@ -66,8 +83,8 @@ app.MapPost("/security/createToken", [AllowAnonymous] (Usuarios user) =>
             Subject = new ClaimsIdentity(new[]
             {
                         new Claim("Id", Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.Sub, user.User),
-                        new Claim(JwtRegisteredClaimNames.Email, user.Nombre),
+                        new Claim(JwtRegisteredClaimNames.Sub, usuario.User),
+                        new Claim(JwtRegisteredClaimNames.Email, usuario.Nombre),
                         new Claim(JwtRegisteredClaimNames.Jti,
                         Guid.NewGuid().ToString())
                          }),
@@ -87,6 +104,9 @@ app.MapPost("/security/createToken", [AllowAnonymous] (Usuarios user) =>
     return Results.Unauthorized();
 });
 
+app.UseCors(x => x.AllowAnyOrigin()
+.AllowAnyMethod().AllowAnyHeader());
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -95,6 +115,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapClientesEndpoints();
+
+app.MapRecordatoriosEndpoints();
+
+app.MapUsuariosEndpoints();
 
 app.Run();
 

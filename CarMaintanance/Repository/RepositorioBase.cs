@@ -1,4 +1,5 @@
 ﻿using CarMaintanance.Model;
+using CarMaintanance.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 

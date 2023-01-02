@@ -1,4 +1,4 @@
-﻿namespace CarMaintanance.Repository
+﻿namespace CarMaintanance.Repository.Interfaces
 {
     public interface IBaseRepository<T>
     {
