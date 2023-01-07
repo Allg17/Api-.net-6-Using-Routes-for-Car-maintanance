@@ -32,7 +32,7 @@ namespace CarMaintanance.Repository
         public int Update(TEntity obj)
         {
 
-            Db.Entry(obj).State = EntityState.Modified;
+            Db.Update(obj);
             return Db.SaveChanges();
         }
         public TEntity GetById(int id)

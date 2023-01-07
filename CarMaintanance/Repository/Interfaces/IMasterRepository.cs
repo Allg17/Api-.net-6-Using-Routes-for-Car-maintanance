@@ -6,5 +6,7 @@
         IRecordatorio RecordatorioRepository { get; set; }
         IFacturas FacturasRepository { get; set; }
         IUsuarios UsuarioRepository { get; set; }
+        IArea AreaRepository { get; set; }
+        ISolicitud  SolicitudesRepository { get; set; }
     }
 }

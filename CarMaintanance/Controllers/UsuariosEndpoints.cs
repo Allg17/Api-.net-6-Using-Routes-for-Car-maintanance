@@ -12,7 +12,7 @@ public static class UsuariosEndpoints
         {
             return await db.Usuarios.ToListAsync();
         })
-        .WithName("GetAllUsuarioss");
+        .WithName("GetAllUsuarioss").RequireAuthorization();
 
         routes.MapGet("/api/Usuarios/{user}/{clave}",  (string user, string clave, IMasterRepository db) =>
         {
@@ -21,44 +21,8 @@ public static class UsuariosEndpoints
                     ? Results.Ok(model)
                     : Results.NotFound();
         })
-        .WithName("GetUsuariosById");
+        .WithName("GetUsuariosById").RequireAuthorization();
 
-        routes.MapPut("/api/Usuarios/{id}", async (int UsuarioID, Usuarios usuarios, CarDbContext db) =>
-        {
-            var foundModel = await db.Usuarios.FindAsync(UsuarioID);
-
-            if (foundModel is null)
-            {
-                return Results.NotFound();
-            }
-            
-            db.Update(usuarios);
-
-            await db.SaveChangesAsync();
-
-            return Results.NoContent();
-        })
-        .WithName("UpdateUsuarios");
-
-        routes.MapPost("/api/Usuarios/", async (Usuarios usuarios, CarDbContext db) =>
-        {
-            db.Usuarios.Add(usuarios);
-            await db.SaveChangesAsync();
-            return Results.Created($"/Usuarioss/{usuarios.UsuarioID}", usuarios);
-        })
-        .WithName("CreateUsuarios");
-
-        routes.MapDelete("/api/Usuarios/{id}", async (int UsuarioID, CarDbContext db) =>
-        {
-            if (await db.Usuarios.FindAsync(UsuarioID) is Usuarios usuarios)
-            {
-                db.Usuarios.Remove(usuarios);
-                await db.SaveChangesAsync();
-                return Results.Ok(usuarios);
-            }
-
-            return Results.NotFound();
-        })
-        .WithName("DeleteUsuarios");
+       
     }
 }

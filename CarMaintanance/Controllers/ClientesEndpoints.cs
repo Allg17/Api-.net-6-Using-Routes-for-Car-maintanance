@@ -11,11 +11,6 @@ namespace CarMaintanance.Controllers
     {
         public static void MapClientesEndpoints(this IEndpointRouteBuilder routes)
         {
-            var options = new JsonSerializerOptions
-            {
-               ReferenceHandler = ReferenceHandler.IgnoreCycles
-            };
-
             routes.MapGet("/api/Clientes", (IMasterRepository db) =>
             {
                 return db.clientesRepository.GetAll();
@@ -34,12 +29,18 @@ namespace CarMaintanance.Controllers
             })
            .WithName(endpointName: "GetClienteByCedula").RequireAuthorization();
 
+            routes.MapGet("/api/Clientes/GetClientes/{id}/{limit}", (string id, int limit, IMasterRepository db) =>
+            {
+                return db.clientesRepository.GetClientes(id,limit);
+            })
+         .WithName(endpointName: "GetClientes").RequireAuthorization();
+
             routes.MapPut("/api/Clientes/{id}", (int ClienteID, Clientes clientes, IMasterRepository db) =>
             {
                 var foundModel = db.clientesRepository.Update(clientes);
                 return Results.NoContent();
             })
-            .WithName("UpdateClientes");
+            .WithName("UpdateClientes").RequireAuthorization();
 
             routes.MapPost("/api/Clientes/", (Clientes clientes, IMasterRepository db) =>
             {
@@ -47,19 +48,6 @@ namespace CarMaintanance.Controllers
                 return Results.Created($"/Clientess/{clientes.ClienteID}", clientes);
             })
             .WithName("CreateClientes").RequireAuthorization();
-
-
-            routes.MapDelete("/api/Clientes/{id}", (int ClienteID, IMasterRepository db) =>
-            {
-                if (db.clientesRepository.GetById(ClienteID) is Clientes clientes)
-                {
-                    db.clientesRepository.Delete(ClienteID);
-                    return Results.Ok(clientes);
-                }
-
-                return Results.NotFound();
-            })
-            .WithName("DeleteClientes").RequireAuthorization();
         }
     }
 }

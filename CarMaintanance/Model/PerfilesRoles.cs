@@ -1,7 +1,12 @@
-﻿namespace CarMaintanance.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+
+
+namespace CarMaintanance.Model
 {
     public class PerfilesRoles
     {
+        [Key]
         public int ID { get; set; }
         public int RolID { get; set; }
         public virtual Roles Rol { get; set; }

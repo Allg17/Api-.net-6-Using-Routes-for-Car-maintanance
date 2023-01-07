@@ -15,7 +15,7 @@ import { environment } from "src/enviroments/enviroments";
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
   private AUTH_HEADER = "Authorization";
-  private token = localStorage.getItem('token') ?? "";
+  
   private refreshTokenInProgress = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
     null
@@ -70,21 +70,23 @@ export class JwtInterceptor implements HttpInterceptor {
   }
 
   private refreshAccessToken(): Observable<any> {
-    return of("secret token");
+    return of(this.authService.Decrypt('token'));
   }
 
   private addAuthenticationToken(request: HttpRequest<any>): HttpRequest<any> {
     // If we do not have a token yet then we should not set the header.
     // Here we could first retrieve the token from where we store it.
-    if (!this.token) {
-      this.authService.RefreshToken(this.authService.auth).subscribe((token) =>{this.token = token;});
+ 
+    let token : string = this.authService.Decrypt('token')
+    if (!token) {
+      this.authService.RefreshToken(this.authService.auth).subscribe((token) =>{token = token;});
     }
     // If you are calling an outside domain then do not add the token.
     if (!request.url.match(environment.baseUrl +"/api")) {
       return request;
     }
     return request.clone({
-      headers: request.headers.set(this.AUTH_HEADER, "Bearer " + this.token)
+      headers: request.headers.set(this.AUTH_HEADER, "Bearer " + token)
     });
   }
 }

@@ -7,30 +7,19 @@ namespace CarMaintanance.Repository
 {
     public class ClientesRepository : RepositorioBase<Clientes>, IClientesRepository
     {
-        CarDbContext _db;
         public ClientesRepository(CarDbContext CarContext) : base(CarContext)
         {
-            _db = CarContext;
+         
         }
 
         public Clientes GetClienteByCedula(string valor)
         {
-            //Func<Clientes, bool> expression = null;
-
-            //switch (opcion)
-            //{
-            //    case 1:
-            //        expression = s => s.Nombre.cont valor;
-            //        break;
-
-            //    case 2:
-            //        expression = s => s.Telefono == valor;
-            //        break;
-            //    case 3:
-            //        expression = s => s.Correo == valor;
-            //        break;
-            //}
             return Db.Clientes.Where(x => x.Cedula==valor).FirstOrDefault();
+        }
+
+        public List<Clientes> GetClientes(string valor, int limit)
+        {
+            return Db.Clientes.Where(x => x.Nombre.Contains(valor) || x.Cedula.Contains(valor)).Take(limit).ToList();
         }
     }
 }

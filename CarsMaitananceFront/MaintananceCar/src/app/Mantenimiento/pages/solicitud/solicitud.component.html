@@ -1,3 +1,79 @@
-<p>solicitud works!</p>
+<h3>Solicitud de Mantenimiento</h3>
 
 
+<div fxLayout="row" fxLayoutGap="40px" fxLayout.xs="column">
+    <div fxFlex="100" fxLayout="column">
+
+        <mat-form-field>
+            <mat-label>Descripcion</mat-label>
+            <textarea matInput type="text" required disabled="{{ver}}" [(ngModel)]="Solicitud.descripcion"></textarea>
+        </mat-form-field>
+
+        <h3>Cliente</h3>
+        <div fxLayout="column">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <input type="text" disabled="{{ver}}" placeholder="Cliente" aria-label="Number" required matInput [(ngModel)]="termino"
+                    [matAutocomplete]="auto" (input)="Buscando()">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                    (optionSelected)="OpcionSeleccionada($event)">
+                    <mat-option *ngFor="let option of clientes" [value]="option">
+                        {{option.nombre}}
+                    </mat-option>
+
+                    <mat-option *ngIf="clientes.length===0 && termino.length>0" value="">
+                        No se encontro ningun Valor
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="20px" fxLayout.xs="column">
+            <mat-form-field fxFlex="100">
+                <mat-label>Nombre</mat-label>
+                <input matInput type="text" disabled="{{ver}}" required [(ngModel)]="Solicituddetalle.nombre">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="100">
+                <mat-label>Precio</mat-label>
+                <input matInput type="number" disabled="{{ver}}" required [(ngModel)]="Solicituddetalle.precio">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="100">
+                <mat-label>Descripcion</mat-label>
+                <input matInput type="text" disabled="{{ver}}" required [(ngModel)]="Solicituddetalle.descripcion">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" fxFlex="100">
+                <input type="text" placeholder="Area" disabled="{{ver}}" aria-label="Number" required matInput [(ngModel)]="terminoArea"
+                    [matAutocomplete]="auto1" (input)="BuscandoArea()">
+                <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete"
+                    (optionSelected)="AreaSeleccionada($event)">
+                    <mat-option *ngFor="let option of areas" [value]="option">
+                        {{option.nombre}}
+                    </mat-option>
+
+                    <mat-option *ngIf="areas.length===0 && terminoArea.length>0" value="">
+                        No se encontro ningun Valor
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+            <button mat-raised-button disabled="{{ver}}" color="green" fxFlex="1" (click)="Agregar()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+
+        <app-solicitud-table (Borrar)="Eliminar($event)" [Acciones]="!ver" [AtivateCompletado]="ver" [Completada]="completada" (Editar)="Modificar($event)"
+            [Lista]="Solicitud.detalle"></app-solicitud-table>
+
+
+        <br>
+        <div fxLayoutGap="10px">
+            <button mat-raised-button color="primary" disabled="{{ver}}" fxFlex="50" (click)="CrearSolicitud()">
+                <mat-icon>edit</mat-icon>
+                {{(Solicitud.solicitudID) ? 'Actualizar' : 'Crear'}}
+
+            </button>
+        </div>
+
+    </div>

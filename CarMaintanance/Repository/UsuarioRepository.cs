@@ -6,10 +6,8 @@ namespace CarMaintanance.Repository
 {
     public class UsuarioRepository : RepositorioBase<Usuarios>, IUsuarios
     {
-        public CarDbContext Db { get; set; }
         public UsuarioRepository(CarDbContext CarContext) : base(CarContext)
         {
-            Db = CarContext;
         }
 
         public Usuarios Get(string username, string clave)

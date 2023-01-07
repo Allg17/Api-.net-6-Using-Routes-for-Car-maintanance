@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 
 namespace CarMaintanance.Model
 {
@@ -22,6 +23,24 @@ namespace CarMaintanance.Model
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<SolicitudesHijas>()
+            .Property(b => b.Fecha)
+            .HasDefaultValueSql("getdate()");
+
+            modelBuilder.Entity<Solicitudes>()
+             .Property(b => b.Fecha)
+             .HasDefaultValueSql("getdate()");
+
+            modelBuilder.Entity<Facturas>()
+            .Property(b => b.Fecha)
+            .HasDefaultValueSql("getdate()");
+
+            modelBuilder.Entity<Clientes>()
+               .Property(b => b.FechaCreado)
+               .HasDefaultValueSql("getdate()");
+
+
             //One to Many
             modelBuilder.Entity<SolicitudesHijas>()
                 .HasOne<Solicitudes>(x => x.Solicitud)
@@ -30,41 +49,41 @@ namespace CarMaintanance.Model
                 .OnDelete(DeleteBehavior.NoAction);
 
 
-            modelBuilder.Entity<SolicitudesHijas>()
-               .HasOne<AreasDetalle>(x => x.AreaDetalle)
-               .WithMany(x => x.DetalleHijas)
-               .HasForeignKey(x => x.AreaDetalleID)
-                      .OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<SolicitudesHijas>()
+            //   .HasOne<AreasDetalle>(x => x.AreaDetalle)
+            //   .WithMany(x => x.DetalleHijas)
+            //   .HasForeignKey(x => x.AreaDetalleID)
+            //          .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Recordatorios>()
              .HasOne<Clientes>(x => x.Cliente)
              .WithMany(x => x.RecordatorioList)
              .HasForeignKey(x => x.ClienteID).OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<AreasDetalle>()
-             .HasOne<Solicitudes>(x => x.Solicitud)
-             .WithMany(x => x.AreaDetalle)
-             .HasForeignKey(x => x.SolicitudID).OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<AreasDetalle>()
+            // .HasOne<Solicitudes>(x => x.Solicitud)
+            // .WithMany(x => x.AreaDetalle)
+            // .HasForeignKey(x => x.SolicitudID).OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<AreasDetalle>()
-               .HasOne<Areas>(x => x.Area)
-               .WithMany(x => x.DetalleArea)
-               .HasForeignKey(foreignKeyExpression: x => x.AreaID).OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<AreasDetalle>()
+            //   .HasOne<Areas>(x => x.Area)
+            //   .WithMany(x => x.DetalleArea)
+            //   .HasForeignKey(foreignKeyExpression: x => x.AreaID).OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Solicitudes>()
               .HasOne<Clientes>(x => x.Cliente)
               .WithMany(x => x.DetalleSolicitud)
               .HasForeignKey(foreignKeyExpression: x => x.ClienteID).OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Facturas>()
-               .HasOne<Clientes>(x => x.Cliente)
-               .WithMany(x => x.DetalleFacturas)
-               .HasForeignKey(foreignKeyExpression: x => x.ClienteID).OnDelete(DeleteBehavior.NoAction);
-
             modelBuilder.Entity<Modulos>()
              .HasOne<Perfiles>(x => x.Perfil)
              .WithMany(x => x.ModulosDetalle)
              .HasForeignKey(foreignKeyExpression: x => x.PerfilID).OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<SolicitudesHijas>()
+            .HasOne<Areas>(x => x.Area)
+            .WithMany(x => x.Hijas)
+            .HasForeignKey(foreignKeyExpression: x => x.AreaID).OnDelete(DeleteBehavior.NoAction);
 
             //Many to many 
             modelBuilder.Entity<PerfilesRoles>()

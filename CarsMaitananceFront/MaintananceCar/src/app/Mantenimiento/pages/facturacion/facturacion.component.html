@@ -1,1 +1,46 @@
-<p>facturacion works!</p>
+<div fxLayout="row" fxLayoutGap="40px" fxLayout.xs="column">
+    <h3 fxFlex="50" fxLayout="column">Solicitud de Mantenimiento</h3>
+    <div fxLayoutGap="40px" fxFlex="90">
+        <button mat-raised-button color="primary" disabled="{{ver}}" fxFlex="50" (click)="CrearFactura()">
+            <mat-icon>edit</mat-icon>
+            Facturar
+
+        </button>
+        <button mat-raised-button color="warn" [hidden]="!despachar" fxFlex="50" (click)="DespacharSolicitud()">
+            <mat-icon>edit</mat-icon>
+            Despachar
+        </button>
+    </div>
+</div>
+
+
+<div fxLayout="row" fxLayoutGap="40px" fxLayout.xs="column">
+    <div fxFlex="100" fxLayout="column">
+
+        <mat-form-field>
+            <mat-label>Comentario Factura</mat-label>
+            <textarea matInput type="text" [(ngModel)]="Factura.comentario" disabled="{{ver}}"></textarea>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Descripcion</mat-label>
+            <textarea matInput type="text" disabled="true" [(ngModel)]="Factura.solicitud.descripcion"></textarea>
+        </mat-form-field>
+
+        <div fxLayout="column">
+            <mat-form-field>
+                <mat-label>Cliente</mat-label>
+                <input type="text" placeholder="Cliente" aria-label="Number" disabled="true" matInput
+                    [(ngModel)]="termino">
+            </mat-form-field>
+
+            <app-solicitud-table [Completada]="completada" (Total)="CalculateTotal($event)" [Facturada]="true"
+                [AtivateCompletado]="true" [Lista]="Factura.solicitud.detalle" [AtivateFacturado]="ver"></app-solicitud-table>
+
+            <br />
+            <div class="container">
+                <div class="row">
+                    <span class="form-control  col">Total: {{this.total | number}}</span>
+                </div>
+            </div>
+        </div>

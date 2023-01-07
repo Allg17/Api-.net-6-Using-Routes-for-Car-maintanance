@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,8 +19,8 @@ namespace CarMaintanance.Model
         public bool Completada { get; set; }
         public bool Facturada { get; set; }
         public int UsuarioID { get; set; }
-        public int AreaDetalleID { get; set; }
         public virtual Solicitudes Solicitud { get; set; }
-        public virtual AreasDetalle AreaDetalle { get; set; }
+        public int AreaID { get; set; }
+        public virtual Areas Area { get; set; }
     }
 }

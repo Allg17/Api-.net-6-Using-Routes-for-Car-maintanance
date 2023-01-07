@@ -95,7 +95,9 @@ namespace CarMaintanance.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<DateTime>("FechaCreado")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -121,7 +123,7 @@ namespace CarMaintanance.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FacturasID"));
 
-                    b.Property<int>("ClienteID")
+                    b.Property<int?>("ClientesClienteID")
                         .HasColumnType("int");
 
                     b.Property<string>("Comentario")
@@ -132,20 +134,19 @@ namespace CarMaintanance.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<int>("SolicitudID")
                         .HasColumnType("int");
-
-                    b.Property<float>("Total")
-                        .HasColumnType("real");
 
                     b.Property<int>("UsuarioID")
                         .HasColumnType("int");
 
                     b.HasKey("FacturasID");
 
-                    b.HasIndex("ClienteID");
+                    b.HasIndex("ClientesClienteID");
 
                     b.HasIndex("SolicitudID")
                         .IsUnique();
@@ -322,11 +323,19 @@ namespace CarMaintanance.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(500)");
 
+                    b.Property<bool>("Despachada")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Facturada")
+                        .HasColumnType("bit");
+
                     b.Property<int>("FacturasID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<int>("UsuarioID")
                         .HasColumnType("int");
@@ -346,7 +355,10 @@ namespace CarMaintanance.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SolicitudHijaID"));
 
-                    b.Property<int>("AreaDetalleID")
+                    b.Property<int>("AreaID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AreasDetalleAreaDetalleID")
                         .HasColumnType("int");
 
                     b.Property<bool>("Completada")
@@ -360,7 +372,9 @@ namespace CarMaintanance.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -377,7 +391,9 @@ namespace CarMaintanance.Migrations
 
                     b.HasKey("SolicitudHijaID");
 
-                    b.HasIndex("AreaDetalleID");
+                    b.HasIndex("AreaID");
+
+                    b.HasIndex("AreasDetalleAreaDetalleID");
 
                     b.HasIndex("SolicitudID");
 
@@ -418,15 +434,15 @@ namespace CarMaintanance.Migrations
             modelBuilder.Entity("CarMaintanance.Model.AreasDetalle", b =>
                 {
                     b.HasOne("CarMaintanance.Model.Areas", "Area")
-                        .WithMany("DetalleArea")
+                        .WithMany()
                         .HasForeignKey("AreaID")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CarMaintanance.Model.Solicitudes", "Solicitud")
-                        .WithMany("AreaDetalle")
+                        .WithMany()
                         .HasForeignKey("SolicitudID")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Area");
@@ -436,19 +452,15 @@ namespace CarMaintanance.Migrations
 
             modelBuilder.Entity("CarMaintanance.Model.Facturas", b =>
                 {
-                    b.HasOne("CarMaintanance.Model.Clientes", "Cliente")
+                    b.HasOne("CarMaintanance.Model.Clientes", null)
                         .WithMany("DetalleFacturas")
-                        .HasForeignKey("ClienteID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("ClientesClienteID");
 
                     b.HasOne("CarMaintanance.Model.Solicitudes", "Solicitud")
                         .WithOne("Factura")
                         .HasForeignKey("CarMaintanance.Model.Facturas", "SolicitudID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.Navigation("Cliente");
 
                     b.Navigation("Solicitud");
                 });
@@ -529,11 +541,15 @@ namespace CarMaintanance.Migrations
 
             modelBuilder.Entity("CarMaintanance.Model.SolicitudesHijas", b =>
                 {
-                    b.HasOne("CarMaintanance.Model.AreasDetalle", "AreaDetalle")
-                        .WithMany("DetalleHijas")
-                        .HasForeignKey("AreaDetalleID")
+                    b.HasOne("CarMaintanance.Model.Areas", "Area")
+                        .WithMany("Hijas")
+                        .HasForeignKey("AreaID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("CarMaintanance.Model.AreasDetalle", null)
+                        .WithMany("DetalleHijas")
+                        .HasForeignKey("AreasDetalleAreaDetalleID");
 
                     b.HasOne("CarMaintanance.Model.Solicitudes", "Solicitud")
                         .WithMany("Detalle")
@@ -541,14 +557,14 @@ namespace CarMaintanance.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("AreaDetalle");
+                    b.Navigation("Area");
 
                     b.Navigation("Solicitud");
                 });
 
             modelBuilder.Entity("CarMaintanance.Model.Areas", b =>
                 {
-                    b.Navigation("DetalleArea");
+                    b.Navigation("Hijas");
 
                     b.Navigation("Perfil")
                         .IsRequired();
@@ -582,8 +598,6 @@ namespace CarMaintanance.Migrations
 
             modelBuilder.Entity("CarMaintanance.Model.Solicitudes", b =>
                 {
-                    b.Navigation("AreaDetalle");
-
                     b.Navigation("Detalle");
 
                     b.Navigation("Factura")

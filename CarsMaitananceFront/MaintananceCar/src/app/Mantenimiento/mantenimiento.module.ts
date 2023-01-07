@@ -15,6 +15,9 @@ import { DespachoComponent } from './pages/despacho/despacho.component';
 import { RecordatorioComponent } from './pages/recordatorio/recordatorio.component';
 import { AgregarClienteComponent } from './componentes/agregar-cliente/agregar-cliente.component';
 import { TextMaskModule } from 'angular2-text-mask';
+import { SolicitudTableComponent } from './componentes/solicitud-table/solicitud-table.component';
+import { ConfirmComponent } from './componentes/confirm/confirm.component';
+import { ConsultarFacturasComponent } from './pages/consultar-facturas/consultar-facturas.component';
 @NgModule({
   declarations: [
     SolicitudComponent,
@@ -25,7 +28,10 @@ import { TextMaskModule } from 'angular2-text-mask';
     FacturacionComponent,
     DespachoComponent,
     RecordatorioComponent,
-    AgregarClienteComponent
+    AgregarClienteComponent,
+    SolicitudTableComponent,
+    ConfirmComponent,
+    ConsultarFacturasComponent
   ],
   imports: [
     CommonModule,

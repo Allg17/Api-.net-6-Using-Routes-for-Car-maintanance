@@ -5,6 +5,12 @@ import { AuthGuard } from './auth/guards/auth.guard';
 
 
 const routes: Routes = [
+  // {
+  //   path: '',
+  //   loadChildren: () => import("./Mantenimiento/mantenimiento.module").then(m => m.MantenimientoModule),
+  //   canLoad: [AuthGuard],
+  //   canActivate:[AuthGuard]
+  // },
   {
     path: 'auth',
     loadChildren: () => import("./auth/auth.module").then(m => m.AuthModule)
@@ -13,7 +19,7 @@ const routes: Routes = [
     path: 'mantenimiento',
     loadChildren: () => import("./Mantenimiento/mantenimiento.module").then(m => m.MantenimientoModule),
     canLoad: [AuthGuard],
-    canActivate:[AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: '404',

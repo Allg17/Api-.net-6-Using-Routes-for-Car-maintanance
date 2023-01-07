@@ -6,10 +6,8 @@ namespace CarMaintanance.Repository
 {
     public class RolesRepository : RepositorioBase<Roles>, IRoles
     {
-        CarDbContext db;
         public RolesRepository(CarDbContext CarContext) : base(CarContext)
         {
-            db = CarContext;
         }
 
         public Roles GetRolesWithPerfiles()

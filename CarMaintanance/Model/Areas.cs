@@ -12,7 +12,7 @@ namespace CarMaintanance.Model
         public int UsuarioID { get; set; }
         [Column(TypeName = "varchar(30)")]
         public string Nombre { get; set; }
-        public virtual List<AreasDetalle> DetalleArea { get; set; }
+        public virtual List<SolicitudesHijas> Hijas { get; set; }
         public virtual Perfiles Perfil { get; set; }
     }
 }

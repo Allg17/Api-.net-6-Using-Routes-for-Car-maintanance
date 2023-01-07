@@ -10,6 +10,7 @@ import { FacturacionComponent } from './pages/facturacion/facturacion.component'
 import { DespachoComponent } from './pages/despacho/despacho.component';
 import { RecordatorioComponent } from './pages/recordatorio/recordatorio.component';
 import { AuthGuard } from '.././auth/guards/auth.guard';
+import { ConsultarFacturasComponent } from './pages/consultar-facturas/consultar-facturas.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,42 @@ const routes: Routes = [
       {
         path: 'solicitud',
         component: SolicitudComponent,
+        canLoad: [AuthGuard],
+        canActivate:[AuthGuard]
+      },
+      {
+        path: 'solicitud/editar/:id',
+        component: SolicitudComponent,
+        canLoad: [AuthGuard],
+        canActivate:[AuthGuard]
+      },
+      {
+        path: 'solicitud/ver/:id',
+        component: SolicitudComponent,
+        canLoad: [AuthGuard],
+        canActivate:[AuthGuard]
+      },
+      {
+        path: 'facturacion/:id',
+        component: FacturacionComponent,
+        canLoad: [AuthGuard],
+        canActivate:[AuthGuard]
+      },
+      {
+        path: 'facturacion/ver/:id',
+        component: FacturacionComponent,
+        canLoad: [AuthGuard],
+        canActivate:[AuthGuard]
+      },
+      {
+        path: 'despachar/:id',
+        component: FacturacionComponent,
+        canLoad: [AuthGuard],
+        canActivate:[AuthGuard]
+      },
+      {
+        path: 'facturacion/editar/:id',
+        component: FacturacionComponent,
         canLoad: [AuthGuard],
         canActivate:[AuthGuard]
       },
@@ -42,19 +79,21 @@ const routes: Routes = [
       },
       {
         path: 'facturacion',
-        component: FacturacionComponent,
+        component: ConsultarFacturasComponent,
         canLoad: [AuthGuard],
         canActivate:[AuthGuard]
       },
       {
         path: 'despacho',
-        component: DespachoComponent,
+        component: ConsultarFacturasComponent,
         canLoad: [AuthGuard],
         canActivate:[AuthGuard]
       },
       {
         path: 'recordatorio',
-        component: RecordatorioComponent
+        component: RecordatorioComponent,
+        canLoad: [AuthGuard],
+        canActivate:[AuthGuard]
       },
       {
         path: '**',

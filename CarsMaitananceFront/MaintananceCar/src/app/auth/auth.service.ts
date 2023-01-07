@@ -5,12 +5,14 @@ import { Usuarios } from '../Interfaces/usuarios';
 import { JsonPipe } from '@angular/common';
 import { ConstantPool } from '@angular/compiler';
 import { environment } from 'src/enviroments/enviroments';
+import * as CryptoJS from 'crypto-js';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
   private baseUrl: string = environment.baseUrl;
+  private key: string = environment.SecretKeyToken;
   private _user = <Usuarios>{};
   constructor(private http: HttpClient) { }
   get auth() {
@@ -19,25 +21,25 @@ export class AuthService {
 
   login(usuario: Usuarios): Observable<boolean> {
     this._user = usuario;
-    this.RefreshToken(usuario).subscribe(token => { })
+    //  this.RefreshToken(usuario).subscribe(token => { })
     return this.http.get<Usuarios>(`${this.baseUrl}/api/usuarios/${usuario.user}/${usuario.clave}`)
       .pipe(
         map(auth => {
           this._user = auth;
           localStorage.removeItem("user");
-          localStorage.setItem('user', JSON.stringify(auth));
+          let encript = CryptoJS.AES.encrypt(JSON.stringify(this._user), this.key).toString();
+          localStorage.setItem('user', encript);
           return auth.usuarioID > 0;
         })
       )
   }
 
   Verificar(): Observable<boolean> {
-    const id = localStorage.getItem('token');
+    const id = this.Decrypt('token');
     if (!id) {
       return of(false);
     }
-
-    this._user = JSON.parse(localStorage.getItem('user') ?? "");
+    this._user = this.Decrypt('user') ;
 
     if (!this._user.user) {
       return of(false);
@@ -64,7 +66,18 @@ export class AuthService {
       .pipe(
         tap(tap => {
           localStorage.removeItem("token");
-          localStorage.setItem('token', tap);
+          let encript = CryptoJS.AES.encrypt(JSON.stringify(tap), this.key).toString();
+          localStorage.setItem('token', encript);
         }));
+  }
+
+  Decrypt(value: string) {
+    let valor = localStorage.getItem(value) ?? '';
+    if (valor) {
+      let encripta = CryptoJS.AES.decrypt(valor, this.key);
+      var decryptedData = JSON.parse(encripta.toString(CryptoJS.enc.Utf8));
+      return decryptedData;
+    }
+    return '';
   }
 }

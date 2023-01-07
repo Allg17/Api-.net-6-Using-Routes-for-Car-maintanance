@@ -14,6 +14,11 @@ export class ClientesService {
     return this.http.get<Clientes>(`${this.baseUrl}/api/Clientes/GetClienteByCedula/{id}?ClienteID=${valor}`);
   }
 
+  BuscarBylimit(valor:string,limit:number)
+  {
+    return this.http.get<Clientes[]>(`${this.baseUrl}/api/Clientes/GetClientes/${valor}/${limit}`);
+  }
+
   Agregar(cliente:Clientes)
   {
     return this.http.post<Clientes>(`${this.baseUrl}/api/Clientes`,cliente);

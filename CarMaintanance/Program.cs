@@ -120,6 +120,12 @@ app.MapRecordatoriosEndpoints();
 
 app.MapUsuariosEndpoints();
 
+app.MapAreasEndpoints();
+
+app.MapSolicitudesEndpoints();
+
+app.MapFacturasEndpoints();
+
 app.Run();
 
 
