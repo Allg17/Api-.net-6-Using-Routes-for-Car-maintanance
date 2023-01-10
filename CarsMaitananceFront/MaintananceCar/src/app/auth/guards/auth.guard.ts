@@ -17,8 +17,7 @@ export class AuthGuard implements CanActivate, CanLoad {
 
         console.log(this.authservice.auth)
         let url = route.url[0].path
-        if(route.url.length >1)
-        {
+        if (route.url.length > 1) {
           url = route.url[0].path + '/' + route.url[1].path
         }
         if (url != "mantenimiento") {
@@ -27,7 +26,6 @@ export class AuthGuard implements CanActivate, CanLoad {
             this.router.navigate(['/404']);
           }
         }
-
 
         if (!res) {
           this.router.navigate(['/auth/login'])
@@ -48,9 +46,5 @@ export class AuthGuard implements CanActivate, CanLoad {
         }
       })
     );
-
-
-
-
   }
 }
