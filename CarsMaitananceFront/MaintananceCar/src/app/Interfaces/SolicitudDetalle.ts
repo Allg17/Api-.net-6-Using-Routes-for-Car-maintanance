@@ -4,7 +4,7 @@ import { Areas } from "./Areas";
 export interface SolicitudDetalle {
     solicitudHijaID: number;
     solicitudID: number;
-    fecha: Date;
+    fechaCreado: Date;
     usuarioID: number;
     precio: number;
     nombre: string;

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CarMaintanance.Model
 {
-    public class Clientes
+    public class Clientes : baseClass
     {
         [Key]
         public int ClienteID { get; set; }
@@ -19,7 +19,6 @@ namespace CarMaintanance.Model
         public string Correo { get; set; }
         [Column(TypeName = "varchar(100)")]
         public string Direccion { get; set; }
-        public DateTime FechaCreado { get; set; }
         public int UsuarioID { get; set; }
         [Column(TypeName = "varchar(15)")]
         public string Cedula { get; set; }

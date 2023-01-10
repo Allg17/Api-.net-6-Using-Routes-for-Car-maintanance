@@ -14,10 +14,38 @@ namespace CarMaintanance.Repository
 
         public List<Solicitudes> GetallSolicitudes()
         {
-            return Db.Solicitudes
-                .Include(x => x.Cliente)
-                .Include(x=>x.Factura)
-                .ToList();
+           return Db.Solicitudes.
+                         Select(lista => new Solicitudes
+                         {
+                             Cliente = lista.Cliente,
+
+                             Detalle = lista.Detalle.Select(x => new SolicitudesHijas
+                             {
+                                 Area = x.Area,
+                                 Descripcion = x.Descripcion,
+                                 AreaID = x.AreaID,
+                                 Completada = x.Completada,
+                                 Facturada = x.Facturada,
+                                 FechaCreado = x.FechaCreado,
+                                 Nombre = x.Nombre,
+                                 Precio = x.Precio,
+                                 Solicitud = x.Solicitud,
+                                 SolicitudHijaID = x.SolicitudHijaID,
+                                 SolicitudID = x.SolicitudID,
+                                 UsuarioID = x.UsuarioID
+
+                             }).ToList(),
+                             SolicitudID = lista.SolicitudID,
+                             ClienteID = lista.ClienteID,
+                             Completada = lista.Completada,
+                             Descripcion = lista.Descripcion,
+                             Despachada = lista.Despachada,
+                             Factura = lista.Factura,
+                             Facturada = lista.Facturada,
+                             FacturasID = lista.FacturasID,
+                             FechaCreado = lista.FechaCreado,
+                             UsuarioID = lista.UsuarioID
+                         }).ToList();
         }
 
         public Solicitudes GetSolicitud(int id)
@@ -41,6 +69,9 @@ namespace CarMaintanance.Repository
 
             if (obj.Detalle.Where(x => x.Completada).Count() == obj.Detalle.Count())
                 obj.Completada = true;
+            else
+                obj.Completada = false;
+
 
             Db.UpdateRange(obj.Detalle.Where(x => x.SolicitudHijaID > 0));
             Db.AddRange(obj.Detalle.Where(x => x.SolicitudHijaID == 0));
@@ -62,13 +93,94 @@ namespace CarMaintanance.Repository
                 }
                 else
                     return false;
-          
+
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-           
+
+        }
+
+        public List<Solicitudes> GetSolicitudesByArea(int AreaId)
+        {
+            var result = Db.Solicitudes
+                         .Where(x => x.Detalle.Where(y => y.AreaID == AreaId).Count() > 0).
+                         Select(lista => new Solicitudes
+                         {
+                             Cliente = lista.Cliente,
+
+                             Detalle = lista.Detalle.Where(y=>y.AreaID ==AreaId).Select(x => new SolicitudesHijas
+                             {
+                                 Area = x.Area,
+                                 Descripcion = x.Descripcion,
+                                 AreaID = x.AreaID,
+                                 Completada = x.Completada,
+                                 Facturada = x.Facturada,
+                                 FechaCreado = x.FechaCreado,
+                                 Nombre = x.Nombre,
+                                 Precio = x.Precio,
+                                 Solicitud = x.Solicitud,
+                                 SolicitudHijaID = x.SolicitudHijaID,
+                                 SolicitudID = x.SolicitudID,
+                                 UsuarioID = x.UsuarioID
+
+                             }).ToList(),
+                             SolicitudID = lista.SolicitudID,
+                             ClienteID = lista.ClienteID,
+                             Completada = lista.Completada,
+                             Descripcion = lista.Descripcion,
+                             Despachada = lista.Despachada,
+                             Factura = lista.Factura,
+                             Facturada = lista.Facturada,
+                             FacturasID = lista.FacturasID,
+                             FechaCreado = lista.FechaCreado,
+                             UsuarioID = lista.UsuarioID
+                         }).ToList();
+
+
+
+            return result;
+        }
+
+        public Solicitudes GetSolicitudByArea(int SolicitudId, string areaId)
+        {
+
+            var areaid = areaId.Split('-');
+
+            return Db.Solicitudes
+                             .Where(x => x.Detalle.Where(y => y.SolicitudID == SolicitudId).Count() > 0).
+                             Select(lista => new Solicitudes
+                             {
+                                 Cliente = lista.Cliente,
+
+                                 Detalle = lista.Detalle.Where(y => areaid.Contains(y.AreaID.ToString())).Select(x => new SolicitudesHijas
+                                 {
+                                     Area = x.Area,
+                                     Descripcion = x.Descripcion,
+                                     AreaID = x.AreaID,
+                                     Completada = x.Completada,
+                                     Facturada = x.Facturada,
+                                     FechaCreado = x.FechaCreado,
+                                     Nombre = x.Nombre,
+                                     Precio = x.Precio,
+                                     Solicitud = x.Solicitud,
+                                     SolicitudHijaID = x.SolicitudHijaID,
+                                     SolicitudID = x.SolicitudID,
+                                     UsuarioID = x.UsuarioID
+
+                                 }).ToList(),
+                                 SolicitudID = lista.SolicitudID,
+                                 ClienteID = lista.ClienteID,
+                                 Completada = lista.Completada,
+                                 Descripcion = lista.Descripcion,
+                                 Despachada = lista.Despachada,
+                                 Factura = lista.Factura,
+                                 Facturada = lista.Facturada,
+                                 FacturasID = lista.FacturasID,
+                                 FechaCreado = lista.FechaCreado,
+                                 UsuarioID = lista.UsuarioID
+                             }).SingleOrDefault();
         }
     }
 }

@@ -18,7 +18,7 @@
 
         <ng-container matColumnDef="fecha">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
-            <td mat-cell *matCellDef="let row"> {{row.fecha | date:'M/d/yy, h:mm a'}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.fechaCreado | date:'M/d/yy, h:mm a'}} </td>
         </ng-container>
 
         <ng-container matColumnDef="completada">
@@ -29,16 +29,21 @@
         <ng-container matColumnDef="Accion">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Accion </th>
             <td mat-cell *matCellDef="let row">
-                <button mat-button color="primary" *ngIf="!row.completada && row.factura == null" [routerLink]="['/mantenimiento/solicitud/editar/',row.solicitudID]">
+                <button mat-button color="primary"
+                    *ngIf="(!row.completada && row.factura == null &&  VerificarAcceso('solicitud/editar')) || row.completada && row.factura == null && VerificarUsuario() "
+                    [routerLink]="['/mantenimiento/solicitud/editar/',row.solicitudID]">
                     Editar
-                </button> 
+                </button>
                 <!-- <span *ngIf="row.completada && row.factura == null">|</span> -->
-                <button mat-button color="primary" *ngIf="row.completada && row.factura == null" [routerLink]="['/mantenimiento/facturacion/',row.solicitudID]">
+                <button mat-button color="primary"
+                    *ngIf="row.completada && row.factura == null &&  VerificarAcceso('facturacion/crear')"
+                    [routerLink]="['/mantenimiento/facturacion/crear/',row.solicitudID]">
                     Facturar
                 </button>
-                <span *ngIf="row.completada && row.factura != null">Facturada | <button mat-button color="primary" [routerLink]="['/mantenimiento/solicitud/ver/',row.solicitudID]">
-                    Ver Solicitud
-                </button> </span>
+                <span *ngIf="row.completada && row.factura != null">Facturada 
+                    <button *ngIf="VerificarAcceso('solicitud/ver')" mat-button color="primary" [routerLink]="['/mantenimiento/solicitud/ver/',row.solicitudID]">
+                        | Ver Solicitud
+                    </button> </span>
             </td>
         </ng-container>
 

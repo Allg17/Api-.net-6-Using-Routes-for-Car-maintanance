@@ -4,7 +4,7 @@
 
 namespace CarMaintanance.Model
 {
-    public class PerfilesRoles
+    public class PerfilesRoles : baseClass
     {
         [Key]
         public int ID { get; set; }

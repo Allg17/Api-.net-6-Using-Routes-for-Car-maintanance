@@ -9,6 +9,7 @@ import { FacturarService } from '../../services/facturar.service';
 import { Facturas } from '../../../Interfaces/Facturas';
 import { SolicitudDetalle } from '../../../Interfaces/SolicitudDetalle';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-consultar-facturas',
@@ -21,7 +22,7 @@ export class ConsultarFacturasComponent {
   Despachar: boolean = false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  constructor(private facturaservice: FacturarService, private router: Router) {
+  constructor(private facturaservice: FacturarService, private authservice: AuthService, private router: Router) {
     if (this.router.url.includes('despacho')) {
       this.Despachar = true;
     }
@@ -34,6 +35,9 @@ export class ConsultarFacturasComponent {
     });
   }
 
+  VerificarAcceso(url: string) {
+    return this.authservice.verificarModulo(url);
+  }
 
   GetTotal(detalle: SolicitudDetalle[]) {
     return detalle.reduce((accumulator, { precio }) => {

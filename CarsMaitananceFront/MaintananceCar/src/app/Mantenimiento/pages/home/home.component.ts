@@ -15,6 +15,12 @@ export class HomeComponent {
 
     this.user = authservice.auth;
   }
+
+  VerificarAcceso(url:string)
+  {
+    return this.authservice.verificarModulo(url);
+  }
+  
   logout() {
     this.authservice.logout();
     this.router.navigate(['./auth/login'])

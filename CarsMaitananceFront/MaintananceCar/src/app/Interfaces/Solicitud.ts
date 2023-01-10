@@ -3,7 +3,7 @@ import { Clientes } from './Clientes';
 
 export interface Solicitud {
     solicitudID: number;
-    fecha: Date;
+    fechaCreado: Date;
     usuarioID: number;
     descripcion: string;
     completada: boolean;

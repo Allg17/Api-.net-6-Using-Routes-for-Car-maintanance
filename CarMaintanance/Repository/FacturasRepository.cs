@@ -15,7 +15,10 @@ namespace CarMaintanance.Repository
         {
             facturas.Solicitud.Facturada = facturas.Completada = facturas.Solicitud.Detalle.Where(x => x.Facturada).Count() == facturas.Solicitud.Detalle.Count() ? true : false;
             facturas.Solicitud.Detalle.ForEach(x => x.Area = null);
-
+            if (string.IsNullOrEmpty(facturas.Comentario))
+            {
+                facturas.Comentario = "";
+            }
 
             Db.Entry(facturas).State = EntityState.Added;
             var res = Db.SaveChanges();

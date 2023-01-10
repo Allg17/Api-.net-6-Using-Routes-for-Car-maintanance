@@ -3,7 +3,7 @@ import { Usuarios } from './usuarios';
 
 export interface Rol {
     rolID: number;
-    fecha: Date;
+    fechaCreado: Date;
     usuarioID: number;
     nombre: string;
     descripcion: string;

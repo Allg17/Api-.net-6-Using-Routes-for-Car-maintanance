@@ -23,12 +23,12 @@
 
         <ng-container matColumnDef="fecha">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Factura</th>
-            <td mat-cell *matCellDef="let row"> {{row.fecha | date:'M/d/yy, h:mm a'}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.fechaCreado | date:'M/d/yy, h:mm a'}} </td>
         </ng-container>
 
         <ng-container matColumnDef="fechaSolicitud">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Solicitud</th>
-            <td mat-cell *matCellDef="let row"> {{row.solicitud.fecha | date:'M/d/yy, h:mm a'}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.solicitud.fechaCreado | date:'M/d/yy, h:mm a'}} </td>
         </ng-container>
 
         <ng-container matColumnDef="completada">
@@ -55,13 +55,13 @@
                 </button>
 
                 <button mat-button color="primary"
-                    *ngIf="row.completada && Despachar && !row.solicitud.despachada"
+                    *ngIf="row.completada && Despachar && !row.solicitud.despachada && VerificarAcceso('despachar')"
                     [routerLink]="['/mantenimiento/despachar/',row.facturasID]">
                     Despachar
                 </button>
 
 
-                <span *ngIf="row.solicitud.despachada">Se Despacho!</span>
+                <span *ngIf="row.solicitud.despachada">Despachada!</span>
 
             </td>
         </ng-container>

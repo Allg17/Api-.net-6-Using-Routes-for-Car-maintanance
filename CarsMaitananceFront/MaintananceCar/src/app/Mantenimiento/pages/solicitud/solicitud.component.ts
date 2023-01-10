@@ -43,11 +43,17 @@ export class SolicitudComponent implements AfterViewInit, OnInit {
           this.clienteSelected = res.cliente;
         })
     }
-   else if (this.router.url.includes('editar')) {
+    else if (this.router.url.includes('editar')) {
       this.completada = true;
+      let areas = ""
+      this.AuthService.auth.rol.pefilesRoles.forEach(role => {
+        areas += role.perfil.areaID.toString() + '-'
+      })
+
+
       this.activatedRoute.params.pipe(
         switchMap(({ id }) =>
-          this.Solicitudservice.GetSolicitud(id)
+          this.Solicitudservice.GetSolicitudByArea(id,areas)
 
         ),
         catchError(error => of(error)))
@@ -62,7 +68,7 @@ export class SolicitudComponent implements AfterViewInit, OnInit {
   ngAfterViewInit(): void {
 
   }
-  ver:boolean = false;
+  ver: boolean = false;
   completada: boolean = false;
   confirm = <Confirm>{};
   termino: string = ""
@@ -179,17 +185,13 @@ export class SolicitudComponent implements AfterViewInit, OnInit {
         else {
           this.Solicitud.usuarioID = this.AuthService.auth.usuarioID;
           this.Solicitud.clienteID = this.clienteSelected?.clienteID ?? 0;
-          this.Solicitud.fecha = new Date();
           this.Solicitudservice.Agregar(this.Solicitud).subscribe(data => {
-            console.log(data)
-
             if (data.solicitudID > 0) {
               this.MostrarSnackBar("Solicitud Creada con exito");
+              this.router.navigate([`/mantenimiento/solicitud/editar/${data.solicitudID}`])
             }
           });
         }
-
-        console.log(JSON.stringify(this.Solicitud));
       }
     });
   }

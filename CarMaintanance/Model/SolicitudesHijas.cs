@@ -5,12 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarMaintanance.Model
 {
-    public class SolicitudesHijas
+    public class SolicitudesHijas : baseClass
     {
         [Key]
         public int SolicitudHijaID { get; set; }
         public int SolicitudID { get; set; }
-        public DateTime Fecha { get; set; }
         [Column(TypeName = "varchar(100)")]
         public string Nombre { get; set; }
         public float Precio { get; set; }

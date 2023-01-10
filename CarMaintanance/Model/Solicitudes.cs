@@ -5,14 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarMaintanance.Model
 {
-    public class Solicitudes
+    public class Solicitudes : baseClass
     {
         [Key]
         public int SolicitudID { get; set; }
         [Column(TypeName = "varchar(500)")]
         public string Descripcion { get; set; }
         public int ClienteID { get; set; }
-        public DateTime Fecha { get; set; }
         public bool Completada { get; set; }
         public bool Facturada { get; set; }
         public bool Despachada { get; set; }

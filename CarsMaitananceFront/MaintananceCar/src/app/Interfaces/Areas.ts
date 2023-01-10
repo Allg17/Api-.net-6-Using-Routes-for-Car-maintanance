@@ -1,7 +1,7 @@
 import { Perfil } from './Perfil';
 export interface Areas {
     areaID: number;
-    fecha: Date;
+    fechaCreado: Date;
     usuarioID: number;
     nombre: string;
     detalleArea: null;

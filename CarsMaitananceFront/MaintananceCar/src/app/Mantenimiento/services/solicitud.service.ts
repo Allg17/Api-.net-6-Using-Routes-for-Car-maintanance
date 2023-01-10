@@ -27,6 +27,14 @@ export class SolicitudService {
     return this.http.get<Solicitud>(`${this.baseUrl}/api/Solicitudes/${id}`);
   }
 
+  GetSolicitudesByArea(id: number) {
+    return this.http.get<Solicitud[]>(`${this.baseUrl}/api/Solicitudes/GetSolicitudesByArea/${id}`);
+  }
+
+  GetSolicitudByArea(id: number, areas:string) {
+    return this.http.get<Solicitud>(`${this.baseUrl}/api/Solicitudes/GetSolicitudByArea/${id}/${areas}`);
+  }
+
   Despachar(id: number) {
     return this.http.put<boolean>(`${this.baseUrl}/api/Solicitudes/UpdateSolicitudesDespacho/?id=${id}`, id);
   }

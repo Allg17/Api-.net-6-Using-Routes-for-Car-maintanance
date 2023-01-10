@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarMaintanance.Model
 {
-    public class Perfiles
+    public class Perfiles : baseClass
     {
         [Key]
         public int PerfilID { get; set; }
@@ -15,8 +15,8 @@ namespace CarMaintanance.Model
         public string Descripcion { get; set; }
         public int AreaID { get; set; }
         public virtual Areas Area { get; set; }
-        public virtual List<PerfilesRoles> PefilesRoles { get; set; }
+        public virtual List<PerfilesRoles> PerfilesRoles { get; set; }
 
-        public virtual List<Modulos> ModulosDetalle { get; set; }
+        public virtual List<PerfilesModulos> PerfilModuloDetalle { get; set; }
     }
 }

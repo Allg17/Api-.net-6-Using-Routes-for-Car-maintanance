@@ -94,7 +94,6 @@ export class FacturacionComponent {
         ),
         catchError(error => of(error)))
         .subscribe(res => {
-          this.Factura.fecha = new Date();
           this.Factura.solicitud = res;
           this.termino = res.cliente.nombre;
         })
@@ -129,7 +128,6 @@ export class FacturacionComponent {
         }
         else {
           this.Factura.usuarioID = this.AuthService.auth.usuarioID;
-          this.Factura.fecha = new Date();
           console.log(JSON.stringify(this.Factura));
           this.facturaservice.Agregar(this.Factura).subscribe(data => {
             console.log(data)

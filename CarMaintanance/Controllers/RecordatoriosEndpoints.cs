@@ -10,7 +10,7 @@ public static class RecordatoriosEndpoints
     {
         routes.MapGet("/api/Recordatorios",  (IMasterRepository db) =>
         {
-            return  db.RecordatorioRepository.GetAll();
+            return  db.RecordatorioRepository.GetallRecordatorio();
         })
         .WithName("GetAllRecordatorioss").RequireAuthorization();
 
@@ -23,37 +23,22 @@ public static class RecordatoriosEndpoints
         })
         .WithName("GetRecordatoriosById").RequireAuthorization();
 
-        routes.MapPut("/api/Recordatorios/{id}",  (int RecordatorioID, Recordatorios recordatorios, IMasterRepository db) =>
+        routes.MapPut("/api/Recordatorios",  ( Recordatorios recordatorios, IMasterRepository db) =>
         {
-            var foundModel =  db.RecordatorioRepository.GetById(RecordatorioID);
-
-            if (foundModel is null)
-            {
-                return Results.NotFound();
-            }
-
+            recordatorios.Cliente = null;
             db.RecordatorioRepository.Update(recordatorios);
             return Results.NoContent();
         })
         .WithName("UpdateRecordatorios").RequireAuthorization();
 
-        routes.MapPost("/api/Recordatorios/",  (Recordatorios recordatorios, IMasterRepository db) =>
+        routes.MapPost("/api/Recordatorios/", (Recordatorios recordatorios, IMasterRepository db) =>
         {
+            recordatorios.ClienteID = recordatorios.Cliente.ClienteID;
+            recordatorios.Cliente = null;
             db.RecordatorioRepository.Save(recordatorios);
             return Results.Created($"/Recordatorioss/{recordatorios.RecordatorioID}", recordatorios);
         })
-        .WithName("CreateRecordatorios").RequireAuthorization();
+           .WithName("CreateRecordatorios").RequireAuthorization();
 
-        routes.MapDelete("/api/Recordatorios/{id}",  (int RecordatorioID, IMasterRepository db) =>
-        {
-            if ( db.RecordatorioRepository.GetById(RecordatorioID) is Recordatorios recordatorios)
-            {
-                db.RecordatorioRepository.Delete(RecordatorioID);
-                return Results.Ok(recordatorios);
-            }
-
-            return Results.NotFound();
-        })
-        .WithName("DeleteRecordatorios").RequireAuthorization();
     }
 }

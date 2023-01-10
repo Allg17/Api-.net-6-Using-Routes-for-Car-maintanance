@@ -16,7 +16,8 @@ namespace CarMaintanance.Repository
                 .Include(x => x.Rol)
                 .ThenInclude(x=>x.PefilesRoles)
                 .ThenInclude(x=>x.Perfil)
-                .ThenInclude(x=>x.ModulosDetalle)
+                .ThenInclude(x=>x.PerfilModuloDetalle)
+                .ThenInclude(x=>x.Modulos)
                 .Where(x => x.User == username && x.Clave == clave)
                 .FirstOrDefault();
         }

@@ -39,7 +39,7 @@ export class AuthService {
     if (!id) {
       return of(false);
     }
-    this._user = this.Decrypt('user') ;
+    this._user = this.Decrypt('user');
 
     if (!this._user.user) {
       return of(false);
@@ -79,5 +79,29 @@ export class AuthService {
       return decryptedData;
     }
     return '';
+  }
+
+  verificarModulo(modulo: string) {
+    let user = this.auth;
+    let value: boolean = false;
+
+    try {
+      user.rol.pefilesRoles.forEach(perfilRol => {
+        perfilRol.perfil.perfilModuloDetalle.forEach(moduloDetalle => {
+          if (moduloDetalle.modulos.nombre === modulo) {
+            value = true;
+            throw new Error('');
+          }
+          else {
+            value = false;
+          }
+        })
+      });
+    }
+    catch (err) {
+      return value;
+    }
+
+    return value;
   }
 }

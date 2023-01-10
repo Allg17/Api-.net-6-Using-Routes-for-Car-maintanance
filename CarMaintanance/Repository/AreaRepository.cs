@@ -10,7 +10,7 @@ namespace CarMaintanance.Repository
         }
         public List<Areas> GetAreas(string valor, int limit)
         {
-            return Db.Areas.Where(x => x.Nombre.Contains(valor)).Take(limit).ToList();
+            return Db.Areas.Where(x => x.Nombre.Contains(valor) && x.AreaVehicular).Take(limit).ToList();
         }
     }
 }

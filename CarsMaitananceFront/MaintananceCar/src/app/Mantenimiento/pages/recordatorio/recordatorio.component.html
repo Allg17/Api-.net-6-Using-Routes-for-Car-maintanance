@@ -1,1 +1,47 @@
-<p>recordatorio works!</p>
+<div style="padding: 10px;">
+    <h1>
+        Crear Recordatorio para proxima Visita
+    </h1>
+
+    <div fxLayout="row" fxLayoutGap="40px" fxLayout.xs="column">
+        <div fxFlex="100" fxLayout="column">
+
+            <mat-form-field class="example-full-width" appearance="fill">
+                <input type="text" placeholder="Cliente" aria-label="Number" required matInput [(ngModel)]="termino"
+                    [matAutocomplete]="auto" (input)="Buscando()">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                    (optionSelected)="OpcionSeleccionada($event)">
+                    <mat-option *ngFor="let option of clientes" [value]="option">
+                        {{option.nombre}}
+                    </mat-option>
+
+                    <mat-option *ngIf="clientes.length===0 && termino.length>0" value="">
+                        No se encontro ningun Valor
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepickerFilter]="myFilter" [(ngModel)]="Recordatorio.fechaRecordatorio"
+                    [matDatepicker]="picker">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+
+            <mat-form-field>
+                <mat-label>Observacion</mat-label>
+                <textarea matInput type="text" required [(ngModel)]="Recordatorio.observacion"></textarea>
+            </mat-form-field>
+            <br>
+            <div fxLayoutGap="10px">
+                <button mat-raised-button color="primary" fxFlex="100" (click)="Agregar()">
+                    <mat-icon>edit</mat-icon>
+                    Crear Recordatorio
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

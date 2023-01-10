@@ -3,7 +3,7 @@ import { Solicitud } from "./Solicitud";
 
 export interface Facturas {
     facturasID: number;
-    fecha: Date;
+    fechaCreado: Date;
     solicitudID: number;
     comentario: string;
     completada: boolean;
